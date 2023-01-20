@@ -99,7 +99,7 @@ void decrypt_data(uint8_t* input_data, size_t input_len,
     for (int i = 0; i < input_len; i = i+2) {
         output_data[i] = ((uint8_t)newkey >> 8) ^ input_data[i];
         if (i + 1 < input_len) {
-            output_data[i + 1] = ((unit8_t)newkey & 0x00ff) ^ input_data[i + 1];
+            output_data[i + 1] = ((uint8_t)newkey & 0x00ff) ^ input_data[i + 1];
             newkey = lfsr_step(newkey);
         }
     }
@@ -119,7 +119,7 @@ size_t decompress_data(uint8_t* input_data, size_t input_len,
             loop_num = (input_data[i + 1] >> 4) & 0x0f;
             for (int j = 0; j < loop_num; j++) {
                 output_data[output_index] = dictionary_data[(input_data[i + 1] & 0x0f)];
-                output_index = ouput_index + 1;
+                output_index = output_index + 1;
             }
             i = i + 2;
         }
