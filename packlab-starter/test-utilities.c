@@ -167,6 +167,24 @@ int test_parse_all(void){
  
 }
 
+
+
+//TESTING calculate_checksum
+int test_checksum(void){
+  uint8_t data[4] = {0x12, 0x31, 0x01, 0x03};
+
+  uint16_t expected_value = 0x47;
+  uint16_t calculated = calculate_checksum(&data[0], 4);
+
+  if (calculated != expected_value){
+    printf("ERROR: Checksum calculation wrong. Expected %u, received %u \n", expected_value, calculated);
+    return 1;
+  }
+
+  return 0;
+
+}
+
 int main(void) {
 
   // Test the LFSR implementation
@@ -199,6 +217,10 @@ int main(void) {
     printf("Error when testing parse_all");
     return 1;
   }
+
+  //TESTS FOR calculate_checksum()
+
+
 
   // TODO - add tests here for other functionality
   // You can craft arbitrary array data as inputs to the functions
