@@ -120,6 +120,33 @@ int test_parse_checksum(void){
  
 }
 
+
+//parse all
+int test_parse_all(void){
+  uint8_t header2[22] = {0x02, 0x13, 0x01, 0xE0, 
+                         0x02, 0xAF, 0x76, 0x92, 
+                         0xB3, 0x83, 0xD8, 0x81, 
+                         0x54, 0xAC, 0xB2, 0x34, 
+                         0x78, 0x12, 0x13, 0xB8,
+                         0x12, 0x34};
+  packlab_config_t config2;
+  parse_header(&header2[0], 22, &config2);
+
+  
+  if (config2.should_checksum != 1 || config2.should_decompress != 1 || config2.should_decrypt != 1){
+    printf("ERROR: expected compress: %d, encrypt: %d, checksum: %d, got %d, %d, %d", 1, 1, 1, config2.should_decompress, config2.should_checksum, config2.should_decrypt);
+    return 1;
+  }
+  
+  if (config2.checksum_value != 0x1234){
+    printf("ERROR: checksum value is incorrect.");
+    return 1;
+  }
+
+  return 0;
+ 
+}
+
 int main(void) {
 
   // Test the LFSR implementation
@@ -128,7 +155,7 @@ int main(void) {
     printf("Error when testing LFSR implementation\n");
     return 1;
   }
-  /*
+  
   int resultparse= test_parse_good();
   if (resultparse != 0){
     printf("Error when testing parse_good");
@@ -140,10 +167,16 @@ int main(void) {
     printf("Error when testing parse_compress");
     return 1;
   }
-  */
+  
   int resultparsechecksum= test_parse_checksum();
   if (resultparsechecksum != 0){
     printf("Error when testing parse_checksum");
+    return 1;
+  }
+
+  int resultparseall= test_parse_all();
+  if (resultparseall != 0){
+    printf("Error when testing parse_all");
     return 1;
   }
 
