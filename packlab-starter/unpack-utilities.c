@@ -132,7 +132,7 @@ size_t decompress_data(uint8_t* input_data, size_t input_len,
   // Return the length of the decompressed data
     size_t output_index = 0;
     uint8_t loop_num = 0;
-    for (int i = 0; i < input_len - 1; i++) {
+    for (int i = 0; i < input_len; i++) {
         if (input_data[i] == 0x07 && input_data[i + 1] != 0x00) {
             loop_num = (input_data[i + 1] >> 4) & 0x0f;
             for (int j = 0; j < loop_num; j++) {
