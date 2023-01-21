@@ -204,6 +204,40 @@ int test_decryption(void){
   return 0;
 }
 
+int test_decrypt1(void){
+
+  uint8_t input_data[1] = {0x60};
+  uint8_t output_data[1];
+
+  uint8_t expected[1] = {0x76};
+  decrypt_data(&input_data[0], 1, &output_data[0], 1, 0x002D);
+
+  for (int i = 0; i<1; i++){
+    if (output_data[i] != expected[i]){
+      printf("ERROR, expected: 0x%X, got: 0x%X\n", expected[i], output_data[i]);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int test_oddlong(void){
+
+  uint8_t input_data[3] = {0x60, 0x5A, 0x23};
+  uint8_t output_data[3];
+
+  uint8_t expected[3] = {0x76, 0xDA, 0x28};
+  decrypt_data(&input_data[0], 3, &output_data[0], 3, 0x002D);
+
+  for (int i = 0; i<3; i++){
+    if (output_data[i] != expected[i]){
+      printf("ERROR, expected: 0x%X, got: 0x%X\n", expected[i], output_data[i]);
+      return 1;
+    }
+  }
+  return 0;
+}
+
 int main(void) {
 
   // Test the LFSR implementation
@@ -253,6 +287,17 @@ int main(void) {
     return 1;
   }
 
+  int resultdecrypt1 = test_decrypt1();
+  if (resultdecrypt1 !=0){
+    printf("Error with decryption odd test\n");
+    return 1;
+  }
+
+  int resultoddlong = test_oddlong();
+  if (resultoddlong !=0){
+    printf("Error with decryption odd test\n");
+    return 1;
+  }
   
   // TODO - add tests here for other functionality
   // You can craft arbitrary array data as inputs to the functions
