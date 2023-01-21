@@ -63,6 +63,21 @@ int test_lfsr_step(void) {
   return 0;
 }
 
+//parse no compress, checksum, encrypt
+int test_parse_good(void){
+  int8_t header[4] = {0x02, 0x13, 0x01, 0x00 };
+  packlab_config_t config;
+  parse_header(header, 4, &config);
+
+  if (config.should_checksum != 0 || config.should_decompress != 0 || config.should_decrypt != 0){
+    printf("ERROR: expected compress: %d, checksum: %d, encrypt: %d, got %d, %d, %d", 0, 0, 0, config.should_decompress, config.should_checksum, config.should_decrypt);
+    return 1;
+  }
+  return 0;
+
+
+}
+
 
 int main(void) {
 
