@@ -245,12 +245,15 @@ int main(void) {
     return 1;
   }
 
+  //printf("TEST: 0x%X\n", lfsr_step(0x002D));
+
   int resultdecryption = test_decryption();
   if (resultdecryption !=0){
     printf("Error with decryption test\n");
     return 1;
   }
 
+  
   // TODO - add tests here for other functionality
   // You can craft arbitrary array data as inputs to the functions
   // Parsing headers, checksumming, decryption, and decompressing are all testable

@@ -117,7 +117,7 @@ void decrypt_data(uint8_t* input_data, size_t input_len,
     for (int i = 0; i < input_len; i = i+2) {
         output_data[i] = ((uint8_t)newkey & 0x00ff) ^ input_data[i];
         if (i + 1 < input_len) {
-            output_data[i + 1] = ((uint8_t)newkey >> 8) ^ input_data[i + 1];
+            output_data[i + 1] = ((uint8_t)(newkey >> 8)) ^ input_data[i + 1];
             newkey = lfsr_step(newkey);
         }
     }
