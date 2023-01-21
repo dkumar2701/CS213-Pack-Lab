@@ -47,7 +47,7 @@ void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* confi
       error_and_exit("ERROR: unused bits are not 0.");
     }
 
-  
+    size_t header_bytes = 4;
     config->should_decompress = 0;
     config->should_checksum = 0;
     config->should_decrypt = 0;
@@ -57,20 +57,27 @@ void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* confi
             config->dictionary_data[i - 4] = input_data[i];
         }
         config->should_decompress = 1;
+        header_bytes = 20;
     }
     if ((input_data[3] & 0x20) == 0x20) {
         if (config->should_decompress == 1) {
             config->checksum_value = ((uint16_t)input_data[20] << 8) | input_data[21];
             config->should_checksum = 1;
+            header_bytes = 22;
         }
         else if(config->should_decompress == 0) {
             config->checksum_value = ((uint16_t)input_data[4] << 8) | input_data[5];
             config->should_checksum = 1;
+            header_bytes = 6;
         }
     }
     if ((input_data[3] & 0x40) == 0x40) {
         config->should_decrypt = 1;
     }
+
+    config->data_offset = header_bytes;
+
+
 }
 
 uint16_t calculate_checksum(uint8_t* input_data, size_t input_len) {

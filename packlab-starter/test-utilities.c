@@ -73,6 +73,11 @@ int test_parse_good(void){
     printf("ERROR: expected compress: %d, checksum: %d, encrypt: %d, got %d, %d, %d", 0, 0, 0, config.should_decompress, config.should_checksum, config.should_decrypt);
     return 1;
   }
+
+  if (config.data_offset != 4){
+    printf("ERROR: Data Offset is incorrect\n");
+    return 1;
+  }
   return 0;
  
 
@@ -91,6 +96,11 @@ int test_parse_compress(void){
   
   if (config2.should_checksum != 0 || config2.should_decompress != 1 || config2.should_decrypt != 0){
     printf("ERROR: expected compress: %d, encrypt: %d, checksum: %d, got %d, %d, %d", 1, 0, 0, config2.should_decompress, config2.should_checksum, config2.should_decrypt);
+    return 1;
+  }
+
+  if (config2.data_offset != 20){
+    printf("ERROR: Data Offset is incorrect\n");
     return 1;
   }
   
@@ -113,6 +123,11 @@ int test_parse_checksum(void){
 
   if (config2.checksum_value != 0x02AF){
     printf("ERROR: checksum value is incorrect.");
+    return 1;
+  }
+
+  if (config2.data_offset != 6){
+    printf("ERROR: Data Offset is incorrect\n");
     return 1;
   }
   
@@ -140,6 +155,11 @@ int test_parse_all(void){
   
   if (config2.checksum_value != 0x1234){
     printf("ERROR: checksum value is incorrect.");
+    return 1;
+  }
+
+  if (config2.data_offset !=22){
+    printf("ERROR: Data offset is incorrect");
     return 1;
   }
 
