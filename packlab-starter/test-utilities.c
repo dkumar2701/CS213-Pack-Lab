@@ -269,6 +269,66 @@ int test_decompress(void){
   return 0;
 }
 
+
+//test if we repeat two things then have another normal bit
+int test_repeat(void){
+
+  uint8_t input_data[6] = {0x01, 0x07, 0x42, 0x07, 0x20, 0x14};
+  size_t input_len = 6;
+  uint8_t output_data[8];
+  size_t output_len = 8;
+  uint8_t dictionary_data[4] = {0x30, 0x31, 0x32, 0x33};
+
+
+  uint8_t expected[8] = {0x01, 0x32, 0x32, 0x32, 0x32, 0x30, 0x30, 0x14};
+
+  uint8_t actual_len = decompress_data(&input_data[0], input_len, &output_data[0], output_len, &dictionary_data[0] );
+
+  if (actual_len != 8){
+    printf("Error: Output len not correct. Expected %u, got %u\n", 8, actual_len);
+    return 1;
+  }
+
+  for (int i = 0; i<8; i++){
+    if (output_data[i] != expected[i]){
+      printf("ERROR, expected: 0x%X, got: 0x%X on index %u\n", expected[i], output_data[i], i);
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
+
+
+int test_07(void){
+
+  uint8_t input_data[4] = {0x01, 0x07, 0x00, 0x11};
+  size_t input_len = 4;
+  uint8_t output_data[3];
+  size_t output_len = 3;
+  uint8_t dictionary_data[4] = {0x30, 0x31, 0x32, 0x33};
+
+
+  uint8_t expected[3] = {0x01, 0x07, 0x11};
+
+  uint8_t actual_len = decompress_data(&input_data[0], input_len, &output_data[0], output_len, &dictionary_data[0] );
+
+  if (actual_len != 3){
+    printf("Error: Output len not correct. Expected %u, got %u\n", 3, actual_len);
+    return 1;
+  }
+
+  for (int i = 0; i<output_len; i++){
+    if (output_data[i] != expected[i]){
+      printf("ERROR, expected: 0x%X, got: 0x%X on index %u\n", expected[i], output_data[i], i);
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
 int main(void) {
 
   // Test the LFSR implementation
@@ -332,7 +392,19 @@ int main(void) {
   
   int resultdecompress = test_decompress();
   if (resultdecompress !=0){
-    printf("Error with decryption odd test\n");
+    printf("Error with decompress test\n");
+    return 1;
+  }
+
+  int resultrepeat = test_repeat();
+  if (resultrepeat !=0){
+    printf("Error with decryption repeat test\n");
+    return 1;
+  }
+
+  int result07 = test_07();
+  if (result07 !=0){
+    printf("Error with decryption repeat test\n");
     return 1;
   }
   // TODO - add tests here for other functionality
