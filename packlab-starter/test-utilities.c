@@ -110,6 +110,11 @@ int test_parse_checksum(void){
     printf("ERROR: expected compress: %d, encrypt: %d, checksum: %d, got %d, %d, %d", 0, 0, 1, config2.should_decompress, config2.should_checksum, config2.should_decrypt);
     return 1;
   }
+
+  if (config2.checksum_value != 0x02AF){
+    printf("ERROR: checksum value is incorrect.");
+    return 1;
+  }
   
   return 0;
  
