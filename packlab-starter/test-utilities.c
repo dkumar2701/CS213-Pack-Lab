@@ -78,6 +78,20 @@ int test_parse_good(void){
 
 }
 
+//parse yes compress, checksum, no encrypt
+int test_parse_compresschecksum(void){
+  uint8_t header[4] = {0x02, 0x13, 0x01, 0xA0 };
+  packlab_config_t config;
+  parse_header(&header[0], 4, &config);
+
+  if (config.should_checksum != 1 || config.should_decompress != 1 || config.should_decrypt != 0){
+    printf("ERROR: expected compress: %d, encrypt: %d, checksum: %d, got %d, %d, %d", 0, 0, 0, config.should_decompress, config.should_checksum, config.should_decrypt);
+    return 1;
+  }
+  return 0;
+ 
+
+}
 
 int main(void) {
 
@@ -91,6 +105,11 @@ int main(void) {
   int resultparse= test_parse_good();
   if (resultparse != 0){
     printf("Error when testing parse_good");
+    return 1;
+  }
+  int resultparsecc= test_parse_compresschecksum();
+  if (resultparse != 0){
+    printf("Error when testing parse_compresschecksum");
     return 1;
   }
 
