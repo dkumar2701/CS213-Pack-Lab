@@ -220,7 +220,11 @@ int main(void) {
 
   //TESTS FOR calculate_checksum()
 
-
+  int resultchecksum= test_checksum();
+  if (resultchecksum != 0){
+    printf("Error when testing checksum");
+    return 1;
+  }
 
   // TODO - add tests here for other functionality
   // You can craft arbitrary array data as inputs to the functions
