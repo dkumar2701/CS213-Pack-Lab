@@ -43,7 +43,7 @@ void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* confi
     }
 
     //check if last 5 bits are 0's
-    if (input_data[3] & 0x00 != 0x00){
+    if ((input_data[3] & 0x00) != 0x00){
       error_and_exit("ERROR: unused bits are not 0.");
     }
 
@@ -52,13 +52,13 @@ void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* confi
     config->should_checksum = 0;
     config->should_decrypt = 0;
 
-    if (input_data[3] & 0x80 == 0x80) {
-        for (int i = 4; i < input_len; i++) {
+    if ((input_data[3] & 0x80) == 0x80) {
+        for (int i = 4; i < 20; i++) {
             config->dictionary_data[i - 4] = input_data[i];
         }
         config->should_decompress = 1;
     }
-    if (input_data[3] & 0x20 == 0x20) {
+    if ((input_data[3] & 0x20) == 0x20) {
         if (config->should_decompress == 1) {
             config->checksum_value = ((uint16_t)input_data[20] << 8) | input_data[21];
             config->should_checksum = 1;
@@ -68,7 +68,7 @@ void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* confi
             config->should_checksum = 1;
         }
     }
-    if (input_data[3] & 0x40 == 0x40) {
+    if ((input_data[3] & 0x40) == 0x40) {
         config->should_decrypt = 1;
     }
 }

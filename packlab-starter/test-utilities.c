@@ -78,20 +78,22 @@ int test_parse_good(void){
 
 }
 
-//parse yes compress, checksum, no encrypt
-int test_parse_compresschecksum(void){
-  uint8_t header[4] = {0x02, 0x13, 0x01, 0xA0 };
-  packlab_config_t config;
-  parse_header(&header[0], 4, &config);
+//parse yes compress, no checksum, no encrypt
+int test_parse_compress(void){
+  uint8_t header2[20] = {0x02, 0x13, 0x01, 0x80, 
+                         0x02, 0xAF, 0x76, 0x92, 
+                         0xB3, 0x83, 0xD8, 0x81, 
+                         0x54, 0xAC, 0xB2, 0x34, 
+                         0x78, 0x12, 0x13, 0xB8};
+  packlab_config_t config2;
+  parse_header(&header2[0], 20, &config2);
 
-  printf("Third byte: 0x%X\n", header[3] & 0x80);
-  printf("does it work?: %d", (header[3] & 0x80) == 0x80);
-  /*
-  if (config.should_checksum != 1 || config.should_decompress != 1 || config.should_decrypt != 0){
-    printf("ERROR: expected compress: %d, encrypt: %d, checksum: %d, got %d, %d, %d", 1, 0, 1, config.should_decompress, config.should_checksum, config.should_decrypt);
+  
+  if (config2.should_checksum != 0 || config2.should_decompress != 1 || config2.should_decrypt != 0){
+    printf("ERROR: expected compress: %d, encrypt: %d, checksum: %d, got %d, %d, %d", 1, 0, 0, config2.should_decompress, config2.should_checksum, config2.should_decrypt);
     return 1;
   }
-  */
+  
   return 0;
  
 
@@ -112,9 +114,9 @@ int main(void) {
     return 1;
   }
   */
-  int resultparsecc= test_parse_compresschecksum();
+  int resultparsecc= test_parse_compress();
   if (resultparsecc != 0){
-    printf("Error when testing parse_compresschecksum");
+    printf("Error when testing parse_compress");
     return 1;
   }
 
