@@ -185,6 +185,25 @@ int test_checksum(void){
 
 }
 
+//Testing decryption
+
+int test_decryption(void){
+
+  uint8_t input_data[2] = {0x60, 0x5A};
+  uint8_t output_data[2];
+
+  uint8_t expected[2] = {0x76, 0xDA};
+  decrypt_data(&input_data[0], 2, &output_data[0], 2, 0x002D);
+
+  for (int i = 0; i<2; i++){
+    if (output_data[i] != expected[i]){
+      printf("ERROR, expected: 0x%X, got: 0x%X\n", expected[i], output_data[i]);
+      return 1;
+    }
+  }
+  return 0;
+}
+
 int main(void) {
 
   // Test the LFSR implementation
@@ -223,6 +242,12 @@ int main(void) {
   int resultchecksum= test_checksum();
   if (resultchecksum != 0){
     printf("Error when testing checksum");
+    return 1;
+  }
+
+  int resultdecryption = test_decryption();
+  if (resultdecryption !=0){
+    printf("Error with decryption test\n");
     return 1;
   }
 
