@@ -241,6 +241,34 @@ int test_oddlong(void){
 
 //TESTING decompress function
 
+int test_decompress(void){
+
+  uint8_t input_data[3] = {0x01, 0x07, 0x42};
+  size_t input_len = 3;
+  uint8_t output_data[5];
+  size_t output_len = 5;
+  uint8_t dictionary_data[4] = {0x30, 0x31, 0x32, 0x33};
+
+
+  uint8_t expected[5] = {0x01, 0x32, 0x32, 0x32, 0x32};
+
+  uint8_t actual_len = decompress_data(&input_data[0], input_len, &output_data[0], output_len, &dictionary_data[0] );
+
+  if (actual_len != 5){
+    printf("Error: Output len not correct. Expected %u, got %u\n", 5, actual_len);
+    return 1;
+  }
+
+  for (int i = 0; i<5; i++){
+    if (output_data[i] != expected[i]){
+      printf("ERROR, expected: 0x%X, got: 0x%X on index %u\n", expected[i], output_data[i], i);
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
 int main(void) {
 
   // Test the LFSR implementation
@@ -302,6 +330,11 @@ int main(void) {
     return 1;
   }
   
+  int resultdecompress = test_decompress();
+  if (resultdecompress !=0){
+    printf("Error with decryption odd test\n");
+    return 1;
+  }
   // TODO - add tests here for other functionality
   // You can craft arbitrary array data as inputs to the functions
   // Parsing headers, checksumming, decryption, and decompressing are all testable
