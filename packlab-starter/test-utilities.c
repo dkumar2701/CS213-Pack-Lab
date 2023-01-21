@@ -108,7 +108,7 @@ int main(void) {
     return 1;
   }
   int resultparsecc= test_parse_compresschecksum();
-  if (resultparse != 0){
+  if (resultparsecc != 0){
     printf("Error when testing parse_compresschecksum");
     return 1;
   }
