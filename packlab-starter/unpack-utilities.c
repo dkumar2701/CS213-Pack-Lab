@@ -37,6 +37,17 @@ void parse_header(uint8_t* input_data, size_t input_len, packlab_config_t* confi
         error_and_exit("ERROR: magic bytes or version byte are incorrect.");
     }
 
+    //check if size is correct
+    if (input_len < 4){
+      error_and_exit("ERROR: header length is incorrect");
+    }
+
+    //check if last 5 bits are 0's
+    if (input_data[3] & 0x00 != 0x00){
+      error_and_exit("ERROR: unused bits are not 0.");
+    }
+
+  
     config->should_decompress = 0;
     config->should_checksum = 0;
     config->should_decrypt = 0;
