@@ -88,6 +88,12 @@ int main(void) {
     return 1;
   }
 
+  int result = test_parse_good();
+  if (result != 0){
+    printf("Error when testing parse_good");
+    return 1;
+  }
+
   // TODO - add tests here for other functionality
   // You can craft arbitrary array data as inputs to the functions
   // Parsing headers, checksumming, decryption, and decompressing are all testable
