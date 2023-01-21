@@ -139,15 +139,19 @@ size_t decompress_data(uint8_t* input_data, size_t input_len,
                 output_data[output_index] = dictionary_data[(input_data[i + 1] & 0x0f)];
                 output_index = output_index + 1;
             }
-            i = i + 2;
+            i = i + 1;
         }
-        else {
-            output_data[output_index] = input_data[i];
-            output_index = output_index + 1;
+        else{
+          output_data[output_index] = input_data[i];
+          output_index = output_index + 1;
+          if (input_data[i] == 0x07 && input_data[i + 1] == 0x00){
+            i = i+1;
+          }
         }
-        output_data[output_index] = input_data[input_len - 1];
-        output_index = output_index + 1;
+        
     }
+    output_data[output_index] = input_data[input_len - 1];
+    output_index = output_index + 1;
     return output_index;
 }
 
