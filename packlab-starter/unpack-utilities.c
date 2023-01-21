@@ -150,8 +150,8 @@ size_t decompress_data(uint8_t* input_data, size_t input_len,
         }
         
     }
-    output_data[output_index] = input_data[input_len - 1];
-    output_index = output_index + 1;
+    //output_data[output_index] = input_data[input_len - 1];
+    //output_index = output_index + 1;
     return output_index;
 }
 
