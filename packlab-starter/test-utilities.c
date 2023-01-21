@@ -238,6 +238,9 @@ int test_oddlong(void){
   return 0;
 }
 
+
+//TESTING decompress function
+
 int main(void) {
 
   // Test the LFSR implementation
